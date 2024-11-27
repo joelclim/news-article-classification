@@ -3,6 +3,5 @@ numpy
 pandas
 joblib
 nltk
-re
 tensorflow
 keras
