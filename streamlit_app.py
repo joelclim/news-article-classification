@@ -29,31 +29,31 @@ with open("models/cnn_label_encoder.pkl", "rb") as handle:
 
 
 def stop_words():
-  all_stopwords = stopwords.words('english')
-  all_stopwords.remove('not')
-
-  return all_stopwords
+    all_stopwords = stopwords.words('english')
+    all_stopwords.remove('not')
+    
+    return all_stopwords
 
 
 def clean_stem_text(text):
-  # replace any non-alphabet characters by a space
-  cleaned_text = re.sub('[^a-zA-Z]', ' ', text)
-
-  # replace uppercase characters to lowercase characters
-  cleaned_text = cleaned_text.lower()
-
-  # split text into words
-  tokens = cleaned_text.split()
-
-  # stem each words of each article text
-  ps = PorterStemmer()
-  all_stopwords = stop_words()
-  stemmed_text = [ps.stem(word) for word in tokens
+    # replace any non-alphabet characters by a space
+    cleaned_text = re.sub('[^a-zA-Z]', ' ', text)
+    
+    # replace uppercase characters to lowercase characters
+    cleaned_text = cleaned_text.lower()
+    
+    # split text into words
+    tokens = cleaned_text.split()
+    
+    # stem each words of each article text
+    ps = PorterStemmer()
+    all_stopwords = stop_words()
+    stemmed_text = [ps.stem(word) for word in tokens
                   if not word in set(all_stopwords)]
-  # join the words together to become a single text separated by a space
-  stemmed_text = ' '.join(stemmed_text)
-
-  return stemmed_text
+    # join the words together to become a single text separated by a space
+    stemmed_text = ' '.join(stemmed_text)
+    
+    return stemmed_text
     
 # Placeholder function for categorization and summarization
 def process_article(article_text):
