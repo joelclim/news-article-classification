@@ -3,7 +3,7 @@ numpy
 pandas
 joblib
 nltk
-sklearn
+scikit-learn
 tensorflow
 keras
 transformers
