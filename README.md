@@ -1,13 +1,10 @@
-# 📦 Streamlit App Starter Kit 
-```
-⬆️ (Replace above with your app's name)
-```
+# 🗞️ News Article Classification
 
-Description of the app ...
+Given a news article, this application classifies it as either business, entertainment, politics, sport, or tech. Additionally, it provides a short summary of of the news article.
 
 ## Demo App
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://app-starter-kit.streamlit.app/)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://jlim-news-article-classification.streamlit.app/)
 
 ## GitHub Codespaces
 
