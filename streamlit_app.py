@@ -66,12 +66,33 @@ def process_article(article_text):
     Returns:
     dict: A dictionary containing the category and summary.
     """
+
     # Mock data to simulate behavior
-    mock_output = {
-        "category": "Technology",
+    # mock_output = {
+    #     "category": "Technology",
+    #     "summary": "This article discusses the advancements in AI and its applications in various industries."
+    # }
+    # return mock_output
+
+    normalized_article = clean_stem_text(article_text)
+    vectorized_article = tdl_vectorizer.transform([normalized_article]).toarray()
+    tdl_category = tdl_model.predict(vectorized_article)[0]
+
+    max_length = 200
+    
+    sequence = dpl_tokenizer.texts_to_sequences([article])
+    padded_sequence = pad_sequences(sequence, maxlen=max_length, padding='post')
+    
+    # Predict the category
+    dpl_prediction = dpl_model.predict(padded_sequence)
+    category_index = dpl_prediction.argmax(axis=1)[0]
+    dpl_category = dpl_label_encoder.inverse_transform([category_index])[0]
+    
+    return {
+        "tdl_category": tdl_category,
+        "dpl_category": dpl_category,
         "summary": "This article discusses the advancements in AI and its applications in various industries."
     }
-    return mock_output
 
 # Streamlit app
 def main():
@@ -88,7 +109,8 @@ def main():
             result = process_article(article_text)
             # Display the results
             st.subheader("Results")
-            st.write(f"**Category:** {result['category']}")
+            st.write(f"**Category (SVM):** {result['tdl_category']}")
+            st.write(f"**Category (Deep Learning):** {result['dpl_category']}")
             st.write(f"**Summary:** {result['summary']}")
         else:
             st.error("Please paste a news article before clicking the button.")
