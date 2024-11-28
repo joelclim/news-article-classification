@@ -86,11 +86,13 @@ def process_article(article_text):
     dpl_prediction = dpl_model.predict(padded_sequence)
     category_index = dpl_prediction.argmax(axis=1)[0]
     dpl_category = dpl_label_encoder.inverse_transform([category_index])[0]
+
+    summary = pretrained_summarizer(article_text, max_length=150, min_length=30, do_sample=False)
     
     return {
         "tdl_category": tdl_category,
         "dpl_category": dpl_category,
-        "summary": "This article discusses the advancements in AI and its applications in various industries."
+        "summary": summary[0]['summary_text']
     }
 
 # Streamlit app
