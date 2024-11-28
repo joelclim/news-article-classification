@@ -119,12 +119,6 @@ def summarize_article(article_text):
     return summary[0]['summary_text']
 
 
-def sample_article():
-    return '''
-    The kiwifruit industry has experienced remarkable growth, with its global market value surpassing A$10 billion in 2018. Projections indicate that by 2025, global consumption will approach 6 million tonnes, expanding at an annual rate of 3.9%. Zespri, the world's largest kiwifruit marketer, manages over 30% of global supply, collaborating with more than 2,500 growers in New Zealand and 1,500 internationally. To streamline its complex operations and meet rising demand, Zespri adopted SAP S/4HANA Cloud, enhancing its supply chain management and data analysis capabilities. This digital transformation enables Zespri to efficiently deliver ripe kiwifruit year-round to consumers worldwide.
-    '''
-
-
 # Streamlit app
 def main():
     st.title('🗞️ News Article Classification and Summarization')
@@ -152,9 +146,6 @@ def main():
         clear_button = st.button("Clear Results", disabled=st.session_state.clear_disabled)
         st.session_state.disabled = True
 
-    if paste_sample_button:
-        st.session_state["sample_article"] = sample_article()
-    
     if classify_button:
         if article_text.strip():
             with st.spinner("Classifying the article..."):
