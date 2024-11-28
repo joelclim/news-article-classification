@@ -65,7 +65,7 @@ def get_deep_learning_model():
 
 @st.cache_resource
 def get_summarizer():
-    return pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
+    return pipeline("summarization", model="google/pegasus-multi_news")
 
 
 def classify(text):
@@ -144,5 +144,7 @@ def main():
 
 # Run the app
 if __name__ == "__main__":
-    
+    get_traditional_learning_model()
+    get_deep_learning_model()
+    get_summarizer()
     main()
