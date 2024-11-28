@@ -1,5 +1,6 @@
 import streamlit as st
 st.set_page_config(layout="wide")
+st.session_state["sample_article"] = ""
 
 import joblib
 import pickle
