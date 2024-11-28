@@ -5,29 +5,13 @@ import pickle
 import re
 import nltk
 nltk.download('stopwords')
-nltk.download('punkt_tab')
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
-from sumy.summarizers.lsa import LsaSummarizer
-from sumy.parsers.plaintext import PlaintextParser
-from sumy.nlp.tokenizers import Tokenizer
-
-# Load traditional model and vecotorizer
-tdl_model = joblib.load('models/svm_model.pkl')
-tdl_vectorizer = joblib.load('models/tfidf_vectorizer.pkl')
-
-# Load the deep learning model, tokenizer, and label encoder
-dpl_model = load_model("models/cnn_model.keras")
-
-with open("models/cnn_tokenizer.pkl", "rb") as handle:
-    dpl_tokenizer = pickle.load(handle)
-
-with open("models/cnn_label_encoder.pkl", "rb") as handle:
-    dpl_label_encoder = pickle.load(handle)
+from transformers import pipeline
 
 
 def stop_words():
@@ -57,17 +41,59 @@ def clean_stem_text(text):
     
     return stemmed_text
 
-def summarize(text):
-    summarizer = LsaSummarizer()
-    parser = PlaintextParser.from_string(text.split("\n",1)[1],Tokenizer("english"))
-    summary = summarizer(parser.document,sentences_count=3)
 
-    sentence = ''
-    for s in summary:
-        sentence += str(s) + ' '
+@st.cache_resource
+def get_traditional_learning_model():
+    model = joblib.load('models/svm_model.pkl')
+    vectorizer = joblib.load('models/tfidf_vectorizer.pkl')
 
-    return sentence
+    return model, vectorizer
+
+
+@st.cache_resource
+def get_deep_learning_model():
+    model = load_model("models/cnn_model.keras")
     
+    with open("models/cnn_tokenizer.pkl", "rb") as handle:
+        tokenizer = pickle.load(handle)
+    
+    with open("models/cnn_label_encoder.pkl", "rb") as handle:
+        label_encoder = pickle.load(handle)
+
+    return model, tokenizer, label_encoder
+
+
+@st.cache_resource
+def get_summarizer():
+    return pipeline("summarization", model="facebook/bart-large-cnn")
+
+
+def classify(text):
+    model, vectorizer = get_traditional_learning_model()
+    
+    normalized_article = clean_stem_text(article_text)
+    vectorized_article = vectorizer.transform([normalized_article]).toarray()
+    category = model.predict(vectorized_article)[0]
+
+    return category
+
+
+def classify_dl(text):
+    model, tokenizer, label_encoder = get_deep_learning_model()
+    
+    sequence = tokenizer.texts_to_sequences([article_text])
+    padded_sequence = pad_sequences(sequence, maxlen=200, padding='post')
+    prediction = model.predict(padded_sequence)
+    category_index = prediction.argmax(axis=1)[0]
+    category = label_encoder.inverse_transform([category_index])[0]
+
+    return category
+
+
+def summarize(text):
+     return get_summarizer().summarizer(article_text, max_length=150, min_length=30, do_sample=False)
+
+
 # Placeholder function for categorization and summarization
 def process_article(article_text):
     """
@@ -87,24 +113,12 @@ def process_article(article_text):
     # }
     # return mock_output
 
-    normalized_article = clean_stem_text(article_text)
-    vectorized_article = tdl_vectorizer.transform([normalized_article]).toarray()
-    tdl_category = tdl_model.predict(vectorized_article)[0]
-
-    max_length = 200
-    sequence = dpl_tokenizer.texts_to_sequences([article_text])
-    padded_sequence = pad_sequences(sequence, maxlen=max_length, padding='post')
-    dpl_prediction = dpl_model.predict(padded_sequence)
-    category_index = dpl_prediction.argmax(axis=1)[0]
-    dpl_category = dpl_label_encoder.inverse_transform([category_index])[0]
-
-    summary = summarize(article_text)
-    
     return {
-        "tdl_category": tdl_category,
-        "dpl_category": dpl_category,
-        "summary": summary
+        "category": classify(article_text),
+        "category_dl": classify_dl(article_text),
+        "summary": summarize(article_text)
     }
+
 
 # Streamlit app
 def main():
@@ -121,11 +135,12 @@ def main():
             result = process_article(article_text)
             # Display the results
             st.subheader("Results")
-            st.write(f"**Category (SVM):** {result['tdl_category']}")
-            st.write(f"**Category (Deep Learning):** {result['dpl_category']}")
+            st.write(f"**Category (SVM):** {result['category']}")
+            st.write(f"**Category (Deep Learning):** {result['category_dl']}")
             st.write(f"**Summary:** {result['summary']}")
         else:
             st.error("Please paste a news article before clicking the button.")
+
 
 # Run the app
 if __name__ == "__main__":
