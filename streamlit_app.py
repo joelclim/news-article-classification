@@ -96,14 +96,7 @@ def classify_dl(text):
     return category
 
 
-def summarize(text):
-    summarizer = load_summarizer()
-    summary = summarizer(text, max_length=150, min_length=30, do_sample=False)
-    return summary[0]['summary_text']
-
-
-# Placeholder function for categorization and summarization
-def process_article(article_text):
+def classify_article(article_text):
     """
     Process the news article to categorize and summarize it.
     
@@ -113,12 +106,16 @@ def process_article(article_text):
     Returns:
     dict: A dictionary containing the category and summary.
     """
-
     return {
         "category": classify(article_text),
         "category_dl": classify_dl(article_text),
-        "summary": summarize(article_text)
     }
+
+
+def summarize_article(article_text):
+    summarizer = load_summarizer()
+    summary = summarizer(article_text, max_length=150, min_length=30, do_sample=False)
+    return summary[0]['summary_text']
 
 
 # Streamlit app
@@ -129,18 +126,46 @@ def main():
     # Text input area for the news article
     article_text = st.text_area("Paste your news article here:", height=300)
 
-    # Button to process the article
-    if st.button("Categorize and Summarize"):
+    classification_results = st.empty()
+    classification_dl_results = st.empty()
+    summarization_results = st.empty()
+
+    # Buttons for actions
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col1:
+        classify_button = st.button("Classify Article")
+    with col2:
+        summarize_button = st.button("Summarize Article")
+    with col3:
+        clear_button = st.button("Clear Results")
+
+    if classify_button:
         if article_text.strip():
-            # Process the article using the placeholder function
-            result = process_article(article_text)
-            # Display the results
-            st.subheader("Results")
-            st.write(f"**Category (SVM):** {result['category']}")
-            st.write(f"**Category (Deep Learning):** {result['category_dl']}")
-            st.write(f"**Summary:** {result['summary']}")
+            with st.spinner("Classifying the article..."):
+                classification = classify_article(article_text)
+                classification_results.subheader("Classification Result using Support Vector Machine")
+                classification_results.write(classification['category'])
+                classification_dl_results.subheader("Classification Result using Deep Learning")
+                classification_dl_results.write(classification['category_dl'])
         else:
-            st.error("Please paste a news article before clicking the button.")
+            st.error("Please paste a news article to classify.")
+
+    # Handle summarization
+    if summarize_button:
+        if article_text.strip():
+            with st.spinner("Summarizing the article..."):
+                summary = summarize_article(article_text)
+                summarization_results.subheader("Summary")
+                summarization_results.write(summary)
+        else:
+            st.error("Please paste a news article to summarize.")
+
+    # Clear results
+    if clear_button:
+        classification_results.empty()
+        classification_dl_results.empty()
+        summarization_results.empty()
+        st.success("Results cleared.")
 
 
 # Run the app
