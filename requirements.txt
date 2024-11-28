@@ -7,4 +7,5 @@ scikit-learn
 tensorflow
 keras
 tf-keras
-sumy
+transformers
+torch
