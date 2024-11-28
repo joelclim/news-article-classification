@@ -146,8 +146,8 @@ def main():
             with st.spinner("Classifying the article..."):
                 classification = classify_article(article_text)
                 classification_header.subheader("Classification")
-                classification_results.write(f'Using Support Vector Machine model: {classification['category']')
-                classification_dl_results.write(f'Using Deep Learning (CNN): {classification['category_dl']')
+                classification_results.write(f'Using Support Vector Machine model: {classification['category']}')
+                classification_dl_results.write(f'Using Deep Learning (CNN): {classification['category_dl']}')
         else:
             st.error("Please paste a news article to classify.")
 
