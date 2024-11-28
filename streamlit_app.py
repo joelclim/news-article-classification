@@ -116,7 +116,7 @@ def process_article(article_text):
     return {
         "category": classify(article_text),
         "category_dl": classify_dl(article_text),
-        "summary": "This article discusses the advancements in AI and its applications in various industries."
+        "summary": summarize(article_text)
     }
 
 
