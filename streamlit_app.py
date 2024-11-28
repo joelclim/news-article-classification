@@ -19,13 +19,13 @@ tdl_model = joblib.load('models/svm_model.pkl')
 tdl_vectorizer = joblib.load('models/tfidf_vectorizer.pkl')
 
 # Load the deep learning model, tokenizer, and label encoder
-# dpl_model = load_model("models/cnn_model.keras")
+dpl_model = load_model("models/cnn_model.keras")
 
-# with open("models/cnn_tokenizer.pkl", "rb") as handle:
-#     dpl_tokenizer = pickle.load(handle)
+with open("models/cnn_tokenizer.pkl", "rb") as handle:
+    dpl_tokenizer = pickle.load(handle)
 
-# with open("models/cnn_label_encoder.pkl", "rb") as handle:
-#     dpl_label_encoder = pickle.load(handle)
+with open("models/cnn_label_encoder.pkl", "rb") as handle:
+    dpl_label_encoder = pickle.load(handle)
 
 
 def stop_words():
