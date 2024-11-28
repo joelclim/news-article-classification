@@ -147,10 +147,10 @@ def main():
     with col3:
         summarize_button = st.button("Summarize Article")
     with col4:
-        clear_button = st.button("Clear Results")
+        clear_button = st.button("Clear Article and Results")
 
     if paste_sample_button:
-        st.session_state["default"] = "Updated text" * 100
+        st.session_state["sample_article"] = sample_article()
         st.experimental_rerun()   
     
     if classify_button:
@@ -180,7 +180,7 @@ def main():
         classification_dl_results.empty()
         summarization_header.empty()
         summarization_results.empty()
-        st.session_state.article_text = ""
+        st.session_state["sample_article"] = ""
         st.success("Results cleared.")
 
 
