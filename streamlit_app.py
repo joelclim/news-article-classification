@@ -71,7 +71,7 @@ def get_summarizer():
 def classify(text):
     model, vectorizer = get_traditional_learning_model()
     
-    normalized_article = clean_stem_text(article_text)
+    normalized_article = clean_stem_text(text)
     vectorized_article = vectorizer.transform([normalized_article]).toarray()
     category = model.predict(vectorized_article)[0]
 
@@ -81,7 +81,7 @@ def classify(text):
 def classify_dl(text):
     model, tokenizer, label_encoder = get_deep_learning_model()
     
-    sequence = tokenizer.texts_to_sequences([article_text])
+    sequence = tokenizer.texts_to_sequences([text])
     padded_sequence = pad_sequences(sequence, maxlen=200, padding='post')
     prediction = model.predict(padded_sequence)
     category_index = prediction.argmax(axis=1)[0]
@@ -91,7 +91,7 @@ def classify_dl(text):
 
 
 def summarize(text):
-     return get_summarizer().summarizer(article_text, max_length=150, min_length=30, do_sample=False)
+     return get_summarizer().summarizer(text, max_length=150, min_length=30, do_sample=False)
 
 
 # Placeholder function for categorization and summarization
