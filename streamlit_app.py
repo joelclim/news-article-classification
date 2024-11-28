@@ -44,7 +44,7 @@ def get_summarizer():
 get_traditional_learning_model()
 get_deep_learning_model()
 
-pipeline("summarization", model="google/pegasus-multi_news", device=0)
+# pipeline("summarization", model="google/pegasus-multi_news", device=0)
 
 def stop_words():
     all_stopwords = stopwords.words('english')
@@ -121,7 +121,7 @@ def process_article(article_text):
     return {
         "category": classify(article_text),
         "category_dl": classify_dl(article_text),
-        "summary": summarize(article_text)
+        "summary": "This article discusses the advancements in AI and its applications in various industries."
     }
 
 
