@@ -11,6 +11,9 @@ from nltk.stem.porter import PorterStemmer
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
+from sumy.summarizers.lsa import LsaSummarizer
+from sumy.parsers.plaintext import PlaintextParser
+from sumy.nlp.tokenizers import Tokenizer
 
 # Load traditional model and vecotorizer
 tdl_model = joblib.load('models/svm_model.pkl')
@@ -52,6 +55,17 @@ def clean_stem_text(text):
     stemmed_text = ' '.join(stemmed_text)
     
     return stemmed_text
+
+def summarize(text):
+    summarizer = LsaSummarizer()
+    parser = PlaintextParser.from_string(doc.split("\n",1)[1],Tokenizer("english"))
+    summary = summarizer(parser.document,sentences_count=3)
+
+    sentence = ''
+    for s in summary:
+        sentence += str(s) + ' '
+
+    return sentence
     
 # Placeholder function for categorization and summarization
 def process_article(article_text):
@@ -82,11 +96,13 @@ def process_article(article_text):
     dpl_prediction = dpl_model.predict(padded_sequence)
     category_index = dpl_prediction.argmax(axis=1)[0]
     dpl_category = dpl_label_encoder.inverse_transform([category_index])[0]
+
+    summary = summarize(article_text)
     
     return {
         "tdl_category": tdl_category,
         "dpl_category": dpl_category,
-        "summary": "This article discusses the advancements in AI and its applications in various industries."
+        "summary": summary
     }
 
 # Streamlit app
