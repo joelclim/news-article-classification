@@ -38,13 +38,13 @@ def get_deep_learning_model():
 
 @st.cache_resource()
 def get_summarizer():
-    return pipeline("summarization", model="google/pegasus-multi_news", device=0)
+    return pipeline("summarization", model="facebook/bart-large-cnn")
 
 
 get_traditional_learning_model()
 get_deep_learning_model()
+get_summarizer()
 
-pipeline("summarization", model="facebook/bart-large-cnn")
 
 def stop_words():
     all_stopwords = stopwords.words('english')
