@@ -134,6 +134,12 @@ def main():
 
     # Text input area for the news article
     article_text = st.text_area("Paste your news article here:", value=sample_article(), height=300)
+        
+    classification_header = st.empty()
+    classification_results = st.empty()
+    classification_dl_results = st.empty()
+    summarization_header = st.empty()
+    summarization_results = st.empty()
 
     # Check if the article text has changed
     if article_text != st.session_state["prev_article"]:
@@ -144,14 +150,6 @@ def main():
         summarization_header.empty()
         summarization_results.empty()
         st.success("Results cleared.")
-        
-    classification_header = st.empty()
-    classification_results = st.empty()
-    classification_dl_results = st.empty()
-    summarization_header = st.empty()
-    summarization_results = st.empty()
-
-    state = None
     
     # Buttons for actions
     _, _, col1, col2, _, _ = st.columns(6)
