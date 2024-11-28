@@ -133,7 +133,7 @@ def main():
     summarization_results = st.empty()
 
     # Buttons for actions
-    col1, col2, col3 = st.columns([1, 1, 1, 6])
+    col1, col2, col3 = st.columns(3)
     with col1:
         classify_button = st.button("Classify Article")
     with col2:
