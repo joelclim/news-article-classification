@@ -130,7 +130,7 @@ def main():
     st.title('🗞️ News Article Classification and Summarization')
 
     # Text input area for the news article
-    article_text = st.text_area("Paste your news article here:", value=st.session_state["sample_article"] height=300)
+    article_text = st.text_area("Paste your news article here:", value=st.session_state["sample_article"], height=300)
 
     classification_header = st.empty()
     classification_results = st.empty()
