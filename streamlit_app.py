@@ -14,6 +14,38 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 from transformers import pipeline
 
 
+
+@st.cache_resource
+def get_traditional_learning_model():
+    model = joblib.load('models/svm_model.pkl')
+    vectorizer = joblib.load('models/tfidf_vectorizer.pkl')
+
+    return model, vectorizer
+
+
+@st.cache_resource
+def get_deep_learning_model():
+    model = load_model("models/cnn_model.keras")
+    
+    with open("models/cnn_tokenizer.pkl", "rb") as handle:
+        tokenizer = pickle.load(handle)
+    
+    with open("models/cnn_label_encoder.pkl", "rb") as handle:
+        label_encoder = pickle.load(handle)
+
+    return model, tokenizer, label_encoder
+
+
+@st.cache_resource(allow_output_mutation=True)
+def get_summarizer():
+    return pipeline("summarization", model="google/pegasus-multi_news", device=0)
+
+
+get_traditional_learning_model()
+get_deep_learning_model()
+get_summarizer()
+
+
 def stop_words():
     all_stopwords = stopwords.words('english')
     all_stopwords.remove('not')
@@ -40,33 +72,6 @@ def clean_stem_text(text):
     stemmed_text = ' '.join(stemmed_text)
     
     return stemmed_text
-
-
-@st.cache_resource
-def get_traditional_learning_model():
-    model = joblib.load('models/svm_model.pkl')
-    vectorizer = joblib.load('models/tfidf_vectorizer.pkl')
-
-    return model, vectorizer
-
-
-@st.cache_resource
-def get_deep_learning_model():
-    model = load_model("models/cnn_model.keras")
-    
-    with open("models/cnn_tokenizer.pkl", "rb") as handle:
-        tokenizer = pickle.load(handle)
-    
-    with open("models/cnn_label_encoder.pkl", "rb") as handle:
-        label_encoder = pickle.load(handle)
-
-    return model, tokenizer, label_encoder
-
-
-@st.cache_resource
-def get_summarizer():
-    return pipeline("summarization", model="google/pegasus-multi_news")
-
 
 def classify(text):
     model, vectorizer = get_traditional_learning_model()
@@ -144,7 +149,4 @@ def main():
 
 # Run the app
 if __name__ == "__main__":
-    get_traditional_learning_model()
-    get_deep_learning_model()
-    get_summarizer()
     main()
