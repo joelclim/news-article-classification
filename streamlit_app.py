@@ -191,11 +191,12 @@ def main():
     st.title('🗞️ News Article Classification and Summarization')
     st.markdown('''
     The application classifies and summarizes a given article text. Two different machine learning models are used to classify the news article. 
-    The first model, the Support Vector Machine (SVM) model, is a classical machine learning model that uses the "Bag of Words" model representation of the article text.
+    The first model, a Support Vector Machine (SVM) model, is a classical machine learning model that uses the "Bag of Words" model representation of the article text.
     Other classical models considered were Naive Bayes and Random Forest, but the SVM model outperformed the former models during validation and testing.
     The second model is Deep Learning model that uses Word Embeddings as the representation of the article text and Convolutional Neural Network as the learning model.
-    A [HuggingFace](https://huggingface.co/) pre-trained model is used for news summarization.
-    This is a [SuperDataScience Community](https://community.superdatascience.com/ project.
+    A [Hugging Face](https://huggingface.co/) pre-trained model is used for news summarization.
+    
+    <p>This is a [SuperDataScience Community](https://community.superdatascience.com/) project.</p>
     '''.strip());
 
     # Text input area for the news article
