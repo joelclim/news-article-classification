@@ -15,7 +15,7 @@ from transformers import pipeline
 
 
 @st.cache_resource
-def get_traditional_learning_model():
+def load_traditional_learning_model():
     nltk.download('stopwords')
     model = joblib.load('models/svm_model.pkl')
     vectorizer = joblib.load('models/tfidf_vectorizer.pkl')
@@ -24,7 +24,7 @@ def get_traditional_learning_model():
 
 
 @st.cache_resource
-def get_deep_learning_model():
+def load_deep_learning_model():
     model = load_model("models/cnn_model.keras")
     
     with open("models/cnn_tokenizer.pkl", "rb") as handle:
@@ -41,9 +41,9 @@ def load_summarizer():
     return pipeline("summarization", model="facebook/bart-large-cnn")
 
 
-get_traditional_learning_model()
-get_deep_learning_model()
-get_summarizer()
+load_traditional_learning_model()
+load_deep_learning_model()
+load_summarizer()
 
 
 def stop_words():
@@ -75,7 +75,7 @@ def clean_stem_text(text):
 
 
 def classify(text):
-    model, vectorizer = get_traditional_learning_model()
+    model, vectorizer = load_traditional_learning_model()
     
     normalized_article = clean_stem_text(text)
     vectorized_article = vectorizer.transform([normalized_article]).toarray()
@@ -85,7 +85,7 @@ def classify(text):
 
 
 def classify_dl(text):
-    model, tokenizer, label_encoder = get_deep_learning_model()
+    model, tokenizer, label_encoder = load_deep_learning_model()
     
     sequence = tokenizer.texts_to_sequences([text])
     padded_sequence = pad_sequences(sequence, maxlen=200, padding='post')
@@ -97,7 +97,7 @@ def classify_dl(text):
 
 
 def summarize(text):
-     return get_summarizer().summarizer(text, max_length=150, min_length=30, do_sample=False)
+     return load_summarizer().summarizer(text, max_length=150, min_length=30, do_sample=False)
 
 
 # Placeholder function for categorization and summarization
