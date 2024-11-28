@@ -152,7 +152,6 @@ def main():
 
     if paste_sample_button:
         st.session_state["sample_article"] = sample_article()
-        st.experimental_rerun()   
     
     if classify_button:
         if article_text.strip():
