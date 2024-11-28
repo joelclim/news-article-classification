@@ -133,7 +133,7 @@ def main():
     summarization_results = st.empty()
 
     # Buttons for actions
-    _, _, col1, col2, col3, col4, _, _ = st.columns(8)
+    _, col1, col2, col3, col4, _ = st.columns(6)
     with col1:
         paste_sample_button = st.button("Paste Sample Article")
     with col2:
