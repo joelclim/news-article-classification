@@ -4,7 +4,6 @@ import joblib
 import pickle
 import re
 import nltk
-nltk.download('stopwords')
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 
@@ -17,6 +16,7 @@ from transformers import pipeline
 
 @st.cache_resource
 def get_traditional_learning_model():
+    nltk.download('stopwords')
     model = joblib.load('models/svm_model.pkl')
     vectorizer = joblib.load('models/tfidf_vectorizer.pkl')
 
