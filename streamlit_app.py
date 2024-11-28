@@ -120,14 +120,17 @@ def summarize_article(article_text):
 
 # Streamlit app
 def main():
-    st.title('🗞️ News Article Classifier')
+    st.title('🗞️ News Article Classification and Summarization')
     st.write("Paste a news article below, and the app will categorize and summarize it.")
 
     # Text input area for the news article
     article_text = st.text_area("Paste your news article here:", height=300)
 
+    classification_header = st.empty()
     classification_results = st.empty()
+    classification_dl_header = st.empty()
     classification_dl_results = st.empty()
+    summarization_header = st.empty()
     summarization_results = st.empty()
 
     # Buttons for actions
@@ -143,9 +146,9 @@ def main():
         if article_text.strip():
             with st.spinner("Classifying the article..."):
                 classification = classify_article(article_text)
-                classification_results.subheader("Classification Result using Support Vector Machine")
+                classification_header.subheader("Classification Result using Support Vector Machine")
                 classification_results.write(classification['category'])
-                classification_dl_results.subheader("Classification Result using Deep Learning")
+                classification_dl_header.subheader("Classification Result using Deep Learning")
                 classification_dl_results.write(classification['category_dl'])
         else:
             st.error("Please paste a news article to classify.")
@@ -155,15 +158,18 @@ def main():
         if article_text.strip():
             with st.spinner("Summarizing the article..."):
                 summary = summarize_article(article_text)
-                summarization_results.subheader("Summary")
+                summarization_header.subheader("Summary")
                 summarization_results.write(summary)
         else:
             st.error("Please paste a news article to summarize.")
 
     # Clear results
     if clear_button:
+        classification_header.empty()
         classification_results.empty()
+        classification_dl_header.empty()
         classification_dl_results.empty()
+        summarization_header.empty()
         summarization_results.empty()
         st.success("Results cleared.")
 
