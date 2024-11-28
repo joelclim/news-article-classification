@@ -36,7 +36,7 @@ def get_deep_learning_model():
     return model, tokenizer, label_encoder
 
 
-@st.cache_resource(allow_output_mutation=True)
+@st.cache_resource()
 def get_summarizer():
     return pipeline("summarization", model="google/pegasus-multi_news", device=0)
 
