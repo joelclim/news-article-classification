@@ -133,12 +133,14 @@ def main():
     summarization_results = st.empty()
 
     # Buttons for actions
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns([0.25, 0.25, 0.25, 0.25])
     with col1:
-        classify_button = st.button("Classify Article")
+        paste_sample_button = st.button("Paste Sample Article")
     with col2:
-        summarize_button = st.button("Summarize Article")
+        classify_button = st.button("Classify Article")
     with col3:
+        summarize_button = st.button("Summarize Article")
+    with col4:
         clear_button = st.button("Clear")
 
     if classify_button:
