@@ -97,7 +97,7 @@ def classify_dl(text):
 
 
 def summarize(text):
-     return load_summarizer().summarizer(text, max_length=150, min_length=30, do_sample=False)
+     return load_summarizer()(text, max_length=150, min_length=30, do_sample=False)
 
 
 # Placeholder function for categorization and summarization
