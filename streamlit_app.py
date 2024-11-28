@@ -11,8 +11,6 @@ from nltk.stem.porter import PorterStemmer
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
-from transformers import pipeline
-
 
 # Load traditional model and vecotorizer
 tdl_model = joblib.load('models/svm_model.pkl')
@@ -26,8 +24,6 @@ with open("models/cnn_tokenizer.pkl", "rb") as handle:
 
 with open("models/cnn_label_encoder.pkl", "rb") as handle:
     dpl_label_encoder = pickle.load(handle)
-
-pretrained_summarizer = pipeline("summarization")
 
 
 def stop_words():
@@ -86,13 +82,11 @@ def process_article(article_text):
     dpl_prediction = dpl_model.predict(padded_sequence)
     category_index = dpl_prediction.argmax(axis=1)[0]
     dpl_category = dpl_label_encoder.inverse_transform([category_index])[0]
-
-    summary = pretrained_summarizer(article_text, max_length=150, min_length=30, do_sample=False)
     
     return {
         "tdl_category": tdl_category,
         "dpl_category": dpl_category,
-        "summary": summary[0]['summary_text']
+        "summary": "This article discusses the advancements in AI and its applications in various industries."
     }
 
 # Streamlit app
