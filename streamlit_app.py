@@ -1,6 +1,5 @@
 import streamlit as st
 st.set_page_config(layout="wide")
-st.session_state["sample_article"] = ""
 
 import joblib
 import pickle
@@ -131,7 +130,7 @@ def main():
     st.title('🗞️ News Article Classification and Summarization')
 
     # Text input area for the news article
-    article_text = st.text_area("Paste your news article here:", value=st.session_state["sample_article"], height=300)
+    article_text = st.text_area("Paste your news article here:", height=300)
 
     classification_header = st.empty()
     classification_results = st.empty()
@@ -142,17 +141,14 @@ def main():
     state = None
     
     # Buttons for actions
-    _, col1, col2, col3, col4, _ = st.columns(6)
+    _, _, col1, col2, col3, _, _ = st.columns(7)
     with col1:
-        paste_sample_button = st.button("Paste Sample")
-        st.session_state.clear_disabled = True
-    with col2:
         classify_button = st.button("Classify Article")
         st.session_state.clear_disabled = False
-    with col3:
+    with col2:
         summarize_button = st.button("Summarize Article")
         st.session_state.clear_disabled = False
-    with col4:
+    with col3:
         clear_button = st.button("Clear Results", disabled=st.session_state.clear_disabled)
         st.session_state.disabled = True
 
@@ -164,8 +160,8 @@ def main():
             with st.spinner("Classifying the article..."):
                 classification = classify_article(article_text)
                 classification_header.subheader("Classification", divider=True)
-                classification_results.markdown(f'### Using Support Vector Machine model:    :blue[{classification['category']}]')
-                classification_dl_results.markdown(f'### Using Deep Learning model (CNN):   :orange[{classification['category_dl']}]')
+                classification_results.markdown(f'### Using Support Vector Machine model: :blue[{classification['category']}]')
+                classification_dl_results.markdown(f'### Using Deep Learning model (CNN): :orange[{classification['category_dl']}]')
         else:
             st.error("Please paste a news article to classify.")
 
@@ -186,7 +182,6 @@ def main():
         classification_dl_results.empty()
         summarization_header.empty()
         summarization_results.empty()
-        st.session_state["sample_article"] = ""
         st.success("Results cleared.")
 
 
