@@ -19,13 +19,13 @@ tdl_model = joblib.load('models/svm_model.pkl')
 tdl_vectorizer = joblib.load('models/tfidf_vectorizer.pkl')
 
 # Load the deep learning model, tokenizer, and label encoder
-dpl_model = load_model("models/cnn_model.keras")
+# dpl_model = load_model("models/cnn_model.keras")
 
-with open("models/cnn_tokenizer.pkl", "rb") as handle:
-    dpl_tokenizer = pickle.load(handle)
+# with open("models/cnn_tokenizer.pkl", "rb") as handle:
+#     dpl_tokenizer = pickle.load(handle)
 
-with open("models/cnn_label_encoder.pkl", "rb") as handle:
-    dpl_label_encoder = pickle.load(handle)
+# with open("models/cnn_label_encoder.pkl", "rb") as handle:
+#     dpl_label_encoder = pickle.load(handle)
 
 
 def stop_words():
@@ -78,19 +78,19 @@ def process_article(article_text):
     vectorized_article = tdl_vectorizer.transform([normalized_article]).toarray()
     tdl_category = tdl_model.predict(vectorized_article)[0]
 
-    max_length = 200
+    # max_length = 200
     
-    sequence = dpl_tokenizer.texts_to_sequences([article])
-    padded_sequence = pad_sequences(sequence, maxlen=max_length, padding='post')
+    # sequence = dpl_tokenizer.texts_to_sequences([article])
+    # padded_sequence = pad_sequences(sequence, maxlen=max_length, padding='post')
     
-    # Predict the category
-    dpl_prediction = dpl_model.predict(padded_sequence)
-    category_index = dpl_prediction.argmax(axis=1)[0]
-    dpl_category = dpl_label_encoder.inverse_transform([category_index])[0]
+    # # Predict the category
+    # dpl_prediction = dpl_model.predict(padded_sequence)
+    # category_index = dpl_prediction.argmax(axis=1)[0]
+    # dpl_category = dpl_label_encoder.inverse_transform([category_index])[0]
     
     return {
         "tdl_category": tdl_category,
-        "dpl_category": dpl_category,
+        # "dpl_category": dpl_category,
         "summary": "This article discusses the advancements in AI and its applications in various industries."
     }
 
@@ -110,7 +110,7 @@ def main():
             # Display the results
             st.subheader("Results")
             st.write(f"**Category (SVM):** {result['tdl_category']}")
-            st.write(f"**Category (Deep Learning):** {result['dpl_category']}")
+            # st.write(f"**Category (Deep Learning):** {result['dpl_category']}")
             st.write(f"**Summary:** {result['summary']}")
         else:
             st.error("Please paste a news article before clicking the button.")
