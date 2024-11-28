@@ -81,11 +81,9 @@ def process_article(article_text):
     max_length = 200
     sequence = dpl_tokenizer.texts_to_sequences([article_text])
     padded_sequence = pad_sequences(sequence, maxlen=max_length, padding='post')
-    
-    # # Predict the category
-    # dpl_prediction = dpl_model.predict(padded_sequence)
-    # category_index = dpl_prediction.argmax(axis=1)[0]
-    # dpl_category = dpl_label_encoder.inverse_transform([category_index])[0]
+    dpl_prediction = dpl_model.predict(padded_sequence)
+    category_index = dpl_prediction.argmax(axis=1)[0]
+    dpl_category = dpl_label_encoder.inverse_transform([category_index])[0]
     
     return {
         "tdl_category": tdl_category,
