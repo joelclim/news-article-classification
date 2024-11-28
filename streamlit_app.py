@@ -207,7 +207,6 @@ def main():
         classification_dl_results.empty()
         summarization_header.empty()
         summarization_results.empty()
-        st.success("Results cleared.")
     
     # Buttons for actions
     _, _, col1, col2, _, _ = st.columns(6)
