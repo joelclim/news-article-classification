@@ -1,4 +1,5 @@
 import streamlit as st
+st.set_page_config(layout="wide")
 
 import joblib
 import pickle
@@ -120,7 +121,6 @@ def summarize_article(article_text):
 
 # Streamlit app
 def main():
-    st.set_page_config(layout="wide")
     st.title('🗞️ News Article Classification and Summarization')
 
     # Text input area for the news article
