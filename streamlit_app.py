@@ -120,8 +120,8 @@ def summarize_article(article_text):
 
 # Streamlit app
 def main():
+    st.set_page_config(layout="wide")
     st.title('🗞️ News Article Classification and Summarization')
-    st.write("Paste a news article below, and the app will categorize and summarize it.")
 
     # Text input area for the news article
     article_text = st.text_area("Paste your news article here:", height=300)
@@ -146,8 +146,8 @@ def main():
             with st.spinner("Classifying the article..."):
                 classification = classify_article(article_text)
                 classification_header.subheader("Classification", divider=True)
-                classification_results.markdown(f'### Using Support Vector Machine model:    {classification['category']}')
-                classification_dl_results.markdown(f'### Using Deep Learning model (CNN):   {classification['category_dl']}')
+                classification_results.markdown(f'### Using Support Vector Machine model:    :blue[{classification['category']}]')
+                classification_dl_results.markdown(f'### Using Deep Learning model (CNN):   :orange[{classification['category_dl']}]')
         else:
             st.error("Please paste a news article to classify.")
 
