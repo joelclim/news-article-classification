@@ -8,5 +8,3 @@ tensorflow
 keras
 tf-keras
 transformers
-torch
-torchtext
