@@ -6,4 +6,5 @@ nltk
 scikit-learn
 tensorflow
 keras
+tf-keras
 transformers
