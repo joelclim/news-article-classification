@@ -195,9 +195,9 @@ def main():
     Other classical models considered were Naive Bayes and Random Forest, but the SVM model outperformed the former models during validation and testing.
     The second model is Deep Learning model that uses Word Embeddings as the representation of the article text and Convolutional Neural Network as the learning model.
     A [Hugging Face](https://huggingface.co/) pre-trained model is used for news summarization.
-    
-    <p>This is a [SuperDataScience Community](https://community.superdatascience.com/) project.</p>
     '''.strip());
+    st.markdown('This is a [SuperDataScience Community](https://community.superdatascience.com/) project.')
+
 
     # Text input area for the news article
     article_text = st.text_area("Paste your news article here:", value=sample_article().strip(), height=300)
