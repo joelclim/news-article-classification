@@ -58,7 +58,7 @@ def clean_stem_text(text):
 
 def summarize(text):
     summarizer = LsaSummarizer()
-    parser = PlaintextParser.from_string(doc.split("\n",1)[1],Tokenizer("english"))
+    parser = PlaintextParser.from_string(text.split("\n",1)[1],Tokenizer("english"))
     summary = summarizer(parser.document,sentences_count=3)
 
     sentence = ''
