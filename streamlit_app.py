@@ -128,13 +128,12 @@ def main():
 
     classification_header = st.empty()
     classification_results = st.empty()
-    classification_dl_header = st.empty()
     classification_dl_results = st.empty()
     summarization_header = st.empty()
     summarization_results = st.empty()
 
     # Buttons for actions
-    col1, col2, col3 = st.columns([1, 1, 1])
+    col1, col2, col3, _ = st.columns([1, 1, 1, 6])
     with col1:
         classify_button = st.button("Classify Article")
     with col2:
@@ -146,10 +145,9 @@ def main():
         if article_text.strip():
             with st.spinner("Classifying the article..."):
                 classification = classify_article(article_text)
-                classification_header.subheader("Classification Result using Support Vector Machine")
-                classification_results.write(classification['category'])
-                classification_dl_header.subheader("Classification Result using Deep Learning")
-                classification_dl_results.write(classification['category_dl'])
+                classification_header.subheader("Classification")
+                classification_results.write(f'Using Support Vector Machine model: {classification['category']')
+                classification_dl_results.write(f'Using Deep Learning (CNN): {classification['category_dl']')
         else:
             st.error("Please paste a news article to classify.")
 
@@ -167,7 +165,6 @@ def main():
     if clear_button:
         classification_header.empty()
         classification_results.empty()
-        classification_dl_header.empty()
         classification_dl_results.empty()
         summarization_header.empty()
         summarization_results.empty()
