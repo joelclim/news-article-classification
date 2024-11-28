@@ -37,7 +37,7 @@ def get_deep_learning_model():
 
 
 @st.cache_resource()
-def get_summarizer():
+def load_summarizer():
     return pipeline("summarization", model="facebook/bart-large-cnn")
 
 
@@ -72,6 +72,7 @@ def clean_stem_text(text):
     stemmed_text = ' '.join(stemmed_text)
     
     return stemmed_text
+
 
 def classify(text):
     model, vectorizer = get_traditional_learning_model()
@@ -111,17 +112,10 @@ def process_article(article_text):
     dict: A dictionary containing the category and summary.
     """
 
-    # Mock data to simulate behavior
-    # mock_output = {
-    #     "category": "Technology",
-    #     "summary": "This article discusses the advancements in AI and its applications in various industries."
-    # }
-    # return mock_output
-
     return {
         "category": classify(article_text),
         "category_dl": classify_dl(article_text),
-        "summary": "This article discusses the advancements in AI and its applications in various industries."
+        "summary": summarize(article_text)
     }
 
 
