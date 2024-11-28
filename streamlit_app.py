@@ -145,7 +145,7 @@ def main():
         if article_text.strip():
             with st.spinner("Classifying the article..."):
                 classification = classify_article(article_text)
-                classification_header.subheader("Classification", divider=True")
+                classification_header.subheader("Classification", divider=True)
                 classification_results.markdown(f'### Using Support Vector Machine model:    {classification['category'])')
                 classification_dl_results.markdown(f'### Using Deep Learning model (CNN):   {classification['category_dl']})
         else:
@@ -156,7 +156,7 @@ def main():
         if article_text.strip():
             with st.spinner("Summarizing the article..."):
                 summary = summarize_article(article_text)
-                summarization_header.subheader("Summary", divider=True")
+                summarization_header.subheader("Summary", divider=True)
                 summarization_results.write(summary)
         else:
             st.error("Please paste a news article to summarize.")
