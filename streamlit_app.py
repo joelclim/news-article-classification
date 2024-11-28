@@ -139,16 +139,22 @@ def main():
     summarization_header = st.empty()
     summarization_results = st.empty()
 
+    state = None
+    
     # Buttons for actions
     _, col1, col2, col3, col4, _ = st.columns(6)
     with col1:
         paste_sample_button = st.button("Paste Sample")
+        st.session_state.clear_disabled = True
     with col2:
         classify_button = st.button("Classify Article")
+        st.session_state.clear_disabled = False
     with col3:
         summarize_button = st.button("Summarize Article")
+        st.session_state.clear_disabled = False
     with col4:
-        clear_button = st.button("Clear Article and Results")
+        clear_button = st.button("Clear Results", disabled=st.session_state.clear_disabled)
+        st.session_state.disabled = True
 
     if paste_sample_button:
         st.session_state["sample_article"] = sample_article()
