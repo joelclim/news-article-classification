@@ -1,6 +1,9 @@
 import streamlit as st
 st.set_page_config(layout="wide")
 
+if "prev_article" not in st.session_state:
+    st.session_state["prev_article"] = ""
+
 import joblib
 import pickle
 import re
@@ -132,6 +135,16 @@ def main():
     # Text input area for the news article
     article_text = st.text_area("Paste your news article here:", value=sample_article(), height=300)
 
+    # Check if the article text has changed
+    if article_text != st.session_state["prev_article"]:
+        st.session_state["prev_article"] = article_text
+        classification_header.empty()
+        classification_results.empty()
+        classification_dl_results.empty()
+        summarization_header.empty()
+        summarization_results.empty()
+        st.success("Results cleared.")
+        
     classification_header = st.empty()
     classification_results = st.empty()
     classification_dl_results = st.empty()
@@ -141,16 +154,11 @@ def main():
     state = None
     
     # Buttons for actions
-    _, _, col1, col2, col3, _, _ = st.columns(7)
+    _, _, col1, col2, _, _ = st.columns(6)
     with col1:
         classify_button = st.button("Classify Article")
-        st.session_state.clear_disabled = False
     with col2:
         summarize_button = st.button("Summarize Article")
-        st.session_state.clear_disabled = False
-    with col3:
-        clear_button = st.button("Clear Results", disabled=st.session_state.clear_disabled)
-        st.session_state.disabled = True
 
     if classify_button:
         if article_text.strip():
@@ -171,15 +179,6 @@ def main():
                 summarization_results.write(summary)
         else:
             st.error("Please paste a news article to summarize.")
-
-    # Clear results
-    if clear_button:
-        classification_header.empty()
-        classification_results.empty()
-        classification_dl_results.empty()
-        summarization_header.empty()
-        summarization_results.empty()
-        st.success("Results cleared.")
 
 
 # Run the app
