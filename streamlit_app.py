@@ -87,7 +87,7 @@ def process_article(article_text):
     
     return {
         "tdl_category": tdl_category,
-        # "dpl_category": dpl_category,
+        "dpl_category": dpl_category,
         "summary": "This article discusses the advancements in AI and its applications in various industries."
     }
 
@@ -107,7 +107,7 @@ def main():
             # Display the results
             st.subheader("Results")
             st.write(f"**Category (SVM):** {result['tdl_category']}")
-            # st.write(f"**Category (Deep Learning):** {result['dpl_category']}")
+            st.write(f"**Category (Deep Learning):** {result['dpl_category']}")
             st.write(f"**Summary:** {result['summary']}")
         else:
             st.error("Please paste a news article before clicking the button.")
