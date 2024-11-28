@@ -78,10 +78,9 @@ def process_article(article_text):
     vectorized_article = tdl_vectorizer.transform([normalized_article]).toarray()
     tdl_category = tdl_model.predict(vectorized_article)[0]
 
-    # max_length = 200
-    
-    # sequence = dpl_tokenizer.texts_to_sequences([article])
-    # padded_sequence = pad_sequences(sequence, maxlen=max_length, padding='post')
+    max_length = 200
+    sequence = dpl_tokenizer.texts_to_sequences([article])
+    padded_sequence = pad_sequences(sequence, maxlen=max_length, padding='post')
     
     # # Predict the category
     # dpl_prediction = dpl_model.predict(padded_sequence)
