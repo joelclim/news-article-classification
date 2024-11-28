@@ -1,6 +1,7 @@
 import streamlit as st
 st.set_page_config(layout="wide")
 
+# Initialize the previous article text state to empty.
 if "prev_article" not in st.session_state:
     st.session_state["prev_article"] = ""
 
@@ -19,7 +20,14 @@ from transformers import pipeline
 
 
 @st.cache_resource
-def load_traditional_learning_model():
+def load_classical_learning_model():
+    """
+    Loads a (classical) machine learning model.
+    
+    Returns:
+    model: the machine learning model.
+    vectorizer: the vectorizer that represents the compute matrix for the "bag of words" model.
+    """
     nltk.download('stopwords')
     model = joblib.load('models/svm_model.pkl')
     vectorizer = joblib.load('models/tfidf_vectorizer.pkl')
@@ -29,6 +37,14 @@ def load_traditional_learning_model():
 
 @st.cache_resource
 def load_deep_learning_model():
+    """
+    Loads a deep learning  model.
+    
+    Returns:
+    model: the machine learning model.
+    tokenizer: the tokenizer that splits the article text into input tokens to the model.
+    label_encoder: the encoder/decoder of classification labels.
+    """
     model = load_model("models/cnn_model.keras")
     
     with open("models/cnn_tokenizer.pkl", "rb") as handle:
@@ -42,15 +58,29 @@ def load_deep_learning_model():
 
 @st.cache_resource()
 def load_summarizer():
+    """
+    Loads a summarization pipeline from HuggingFace.
+    
+    Returns:
+    summarizer: the summarization pipeline.
+    """
     return pipeline("summarization", model="facebook/bart-large-cnn")
 
 
-load_traditional_learning_model()
+# Loads and caches the models and summarizer immediately when the application starts
+load_classical_learning_model()
 load_deep_learning_model()
 load_summarizer()
 
 
+@st.cache_resource()
 def stop_words():
+    """
+    Gets the list of NTLK English stopwords with modifications.
+    
+    Returns:
+    stop_words: the NTLK English stopwords.
+    """
     all_stopwords = stopwords.words('english')
     all_stopwords.remove('not')
     
@@ -58,6 +88,15 @@ def stop_words():
 
 
 def clean_stem_text(text):
+    """
+    Cleans and stems the article text for use in the "Bag of Words" model.
+    
+    Parameters:
+    text (str): the news article text.
+    
+    Returns:
+    stemmed_text: cleaned and stemmed version of the article text.
+    """
     # replace any non-alphabet characters by a space
     cleaned_text = re.sub('[^a-zA-Z]', ' ', text)
     
@@ -79,7 +118,17 @@ def clean_stem_text(text):
 
 
 def classify(text):
-    model, vectorizer = load_traditional_learning_model()
+    """
+    Classifies the article text using a classical machine learning model. 
+    The article is classified as either business, entertainment, politics, sport, or tech.
+    
+    Parameters:
+    text (str): the news article text.
+    
+    Returns:
+    category: the article's classification.
+    """
+    model, vectorizer = load_classical_learning_model()
     
     normalized_article = clean_stem_text(text)
     vectorized_article = vectorizer.transform([normalized_article]).toarray()
@@ -89,6 +138,16 @@ def classify(text):
 
 
 def classify_dl(text):
+    """
+    Classifies the article text using a deep learning model. 
+    The article is classified as either business, entertainment, politics, sport, or tech.
+    
+    Parameters:
+    text (str): the news article text.
+    
+    Returns:
+    category: the article's classification.
+    """
     model, tokenizer, label_encoder = load_deep_learning_model()
     
     sequence = tokenizer.texts_to_sequences([text])
@@ -100,35 +159,34 @@ def classify_dl(text):
     return category
 
 
-def classify_article(article_text):
+def summarize_article(text):
     """
-    Process the news article to categorize and summarize it.
+    Summarizes the article text.
     
     Parameters:
-    article_text (str): The news article text.
+    text (str): the news article text.
     
     Returns:
-    dict: A dictionary containing the category and summary.
+    summary: the article's summary.
     """
-    return {
-        "category": classify(article_text),
-        "category_dl": classify_dl(article_text),
-    }
-
-
-def summarize_article(article_text):
     summarizer = load_summarizer()
-    summary = summarizer(article_text, max_length=150, min_length=30, do_sample=False)
+    summary = summarizer(text, max_length=150, min_length=30, do_sample=False)
     return summary[0]['summary_text']
 
 
 def sample_article():
+    """
+    A sample article.
+
+    Returns:
+    sample_article: a sample article.
+    """    
     return '''
     The kiwifruit industry has experienced remarkable growth, with its global market value surpassing A$10 billion in 2018. Projections indicate that by 2025, global consumption will approach 6 million tonnes, expanding at an annual rate of 3.9%. Zespri, the world's largest kiwifruit marketer, manages over 30% of global supply, collaborating with more than 2,500 growers in New Zealand and 1,500 internationally. To streamline its complex operations and meet rising demand, Zespri adopted SAP S/4HANA Cloud, enhancing its supply chain management and data analysis capabilities. This digital transformation enables Zespri to efficiently deliver ripe kiwifruit year-round to consumers worldwide.
     '''
 
 
-# Streamlit app
+# The main method of the Streamlit app
 def main():
     st.title('🗞️ News Article Classification and Summarization')
 
@@ -161,10 +219,9 @@ def main():
     if classify_button:
         if article_text.strip():
             with st.spinner("Classifying the article..."):
-                classification = classify_article(article_text)
                 classification_header.subheader("Classification", divider=True)
-                classification_results.markdown(f'### Using Support Vector Machine model: :blue[{classification['category']}]')
-                classification_dl_results.markdown(f'### Using Deep Learning model (CNN): :orange[{classification['category_dl']}]')
+                classification_results.markdown(f'### Using Support Vector Machine model: :blue[{classify(article_text)}]')
+                classification_dl_results.markdown(f'### Using Deep Learning model (CNN): :orange[{classify_dl(article_text)}]')
         else:
             st.error("Please paste a news article to classify.")
 
