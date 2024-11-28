@@ -139,15 +139,16 @@ def main():
     with col2:
         summarize_button = st.button("Summarize Article")
     with col3:
-        clear_button = st.button("Clear Results")
+        clear_button = st.button("Clear")
 
     if classify_button:
         if article_text.strip():
             with st.spinner("Classifying the article..."):
                 classification = classify_article(article_text)
-                classification_header.subheader("Classification")
-                classification_results.write(f'Using Support Vector Machine model: {classification['category']}')
-                classification_dl_results.write(f'Using Deep Learning (CNN): {classification['category_dl']}')
+                classification_header.header("Classification using Support Vector Machine model, divider=True")
+                classification_results.subheader(classification['category'])
+                classification_dl_header.header("Classification using Deep Learning (CNN), divider=True")
+                classification_dl_results.subheader(classification['category_dl'])
         else:
             st.error("Please paste a news article to classify.")
 
@@ -165,9 +166,11 @@ def main():
     if clear_button:
         classification_header.empty()
         classification_results.empty()
+        classification_dl_header.empty()
         classification_dl_results.empty()
         summarization_header.empty()
         summarization_results.empty()
+        st.session_state.article_text = ""
         st.success("Results cleared.")
 
 
