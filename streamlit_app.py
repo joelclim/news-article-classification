@@ -65,7 +65,7 @@ def get_deep_learning_model():
 
 @st.cache_resource
 def get_summarizer():
-    return pipeline("summarization", model="facebook/bart-large-cnn")
+    return pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
 
 
 def classify(text):
