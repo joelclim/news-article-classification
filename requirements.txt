@@ -10,4 +10,3 @@ tf-keras
 transformers
 torch
 torchtext
-tensorflow-gpu
