@@ -27,7 +27,7 @@ with open("models/cnn_tokenizer.pkl", "rb") as handle:
 with open("models/cnn_label_encoder.pkl", "rb") as handle:
     dpl_label_encoder = pickle.load(handle)
 
-pretrained_summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
+pretrained_summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6", from_pt=True)
 
 
 def stop_words():
