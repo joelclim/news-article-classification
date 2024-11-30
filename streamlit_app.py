@@ -186,7 +186,7 @@ def classify_dl(text):
         'sport': ':blue[sport]', 
         'tech': ':violet[tech]'
     }
-    predicted_categories = [f'{categories[dpl_label_encoder.inverse_transform([i])[0]]} (Confidence: {probabilities[i]:.2%})' 
+    predicted_categories = [f'{categories[label_encoder.inverse_transform([i])[0]]} (Confidence: {probabilities[i]:.2%})' 
                             for i in prediction_indices]
 
     return ', '.join(predicted_categories)
