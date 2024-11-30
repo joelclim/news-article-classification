@@ -261,8 +261,8 @@ def main():
         if article_text.strip():
             with st.spinner("Classifying the article..."):
                 classification_header.subheader("Classification", divider=True)
-                classification_results.markdown(f'#### Predicted categories (Support Vector Machines): {classify(article_text)}')
-                classification_dl_results.markdown(f'#### Predicted categories (Convolutioal Neural Network): :orange[{classify_dl(article_text)}]')
+                classification_results.markdown(f'#### Predicted categories by a Support Vector Machine: {classify(article_text)}')
+                classification_dl_results.markdown(f'#### Predicted categories by a Convolutioal Neural Network: :orange[{classify_dl(article_text)}]')
         else:
             st.error("Please paste a news article to classify.")
 
