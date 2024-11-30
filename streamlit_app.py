@@ -167,11 +167,29 @@ def classify_dl(text):
     
     sequence = tokenizer.texts_to_sequences([text])
     padded_sequence = pad_sequences(sequence, maxlen=200, padding='post')
-    prediction = model.predict(padded_sequence)
-    category_index = prediction.argmax(axis=1)[0]
-    category = label_encoder.inverse_transform([category_index])[0]
+    
+    probabilities = model.predict(padded_sequence)[0]
 
-    return category
+    # Find the index of the maximum probabilities
+    max_index = np.argmax(probabilities)
+    
+    # Find the indices of probabilities that are within 0.01 of the maximum probabilities
+    threshold = 0.01
+    close_indices = np.where(np.abs(probabilities - probabilities[max_index]) <= threshold)[0]
+    
+    prediction_indices = [max_index] + close_indices
+    
+    categories = {
+        'business': ':red[business]', 
+        'entertainment': ':orange[entertainment]', 
+        'politics': ':green[politics]', 
+        'sport': ':blue[sport]', 
+        'tech': ':violet[tech]'
+    }
+    predicted_categories = [f'{categories[dpl_label_encoder.inverse_transform([i])[0]]} (Confidence: {probabilities[i]:.2%})' 
+                            for i in prediction_indices]
+
+    return ', '.join(predicted_categories)
 
 
 def summarize_article(text):
