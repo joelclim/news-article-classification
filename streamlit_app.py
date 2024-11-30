@@ -147,7 +147,7 @@ def classify(text):
 
     # Get category labels based on the predicted indices
     categories = [':red[business]', ':orange[entertainment]', ':green[politics]', ':blue[sport]', ':violet[tech]']
-    predicted_categories = [categories[i] for i in prediction_indices]
+    predicted_categories =  [f'{categories[i]} (Confidence: {probabilities[i]:.2%})'  for i in prediction_indices]
     
     return ', '.join(predicted_categories)
 
@@ -243,8 +243,8 @@ def main():
         if article_text.strip():
             with st.spinner("Classifying the article..."):
                 classification_header.subheader("Classification", divider=True)
-                classification_results.markdown(f'#### Predicted categories using a Support Vector Machine model: {classify(article_text)}')
-                classification_dl_results.markdown(f'#### Predicted categories using a Deep Learning model: :orange[{classify_dl(article_text)}]')
+                classification_results.markdown(f'#### Predicted categories (SVM): {classify(article_text)}')
+                classification_dl_results.markdown(f'#### Predicted categories (CNN): :orange[{classify_dl(article_text)}]')
         else:
             st.error("Please paste a news article to classify.")
 
