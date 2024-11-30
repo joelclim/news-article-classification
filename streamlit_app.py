@@ -8,6 +8,7 @@ if "prev_article" not in st.session_state:
 import joblib
 import pickle
 import re
+import numpy as np
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
