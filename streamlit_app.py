@@ -132,9 +132,23 @@ def classify(text):
     
     normalized_article = clean_stem_text(text)
     vectorized_article = vectorizer.transform([normalized_article]).toarray()
-    category = model.predict(vectorized_article)[0]
+    probabilities = model.predict_proba(vectorized_article)[0]
 
-    return category
+    # Find the index of the maximum probabilities
+    max_index = np.argmax(probabilities)
+    
+    # Find the indices of probabilities that are within 0.01 of the maximum probabilities
+    threshold = 0.01
+    close_indices = np.where(np.abs(probabilities - probabilities[max_index]) <= threshold)[0]
+
+    # Merge indices
+    prediction_indices = [max_index] + close_indices
+
+    # Get category labels based on the predicted indices
+    categories = [':red[business]', ':orange[entertainment]', ':green[politics]', ':blue[sport]', ':violet[tech]']
+    predicted_categories = [categories[i] for i in prediction_indices]
+    
+    return ', '.join(predicted_categories)
 
 
 def classify_dl(text):
@@ -228,8 +242,8 @@ def main():
         if article_text.strip():
             with st.spinner("Classifying the article..."):
                 classification_header.subheader("Classification", divider=True)
-                classification_results.markdown(f'### Using Support Vector Machine model: :blue[{classify(article_text)}]')
-                classification_dl_results.markdown(f'### Using Deep Learning model (CNN): :orange[{classify_dl(article_text)}]')
+                classification_results.markdown(f'#### Predicted categories using a Support Vector Machine model: {classify(article_text)}')
+                classification_dl_results.markdown(f'#### Predicted categories using a Deep Learning model: :orange[{classify_dl(article_text)}]')
         else:
             st.error("Please paste a news article to classify.")
 
