@@ -230,15 +230,19 @@ def sample_article():
 # The main method of the Streamlit app
 def main():
     st.title('🗞️ News Article Classification and Summarization')
-    st.markdown('The application classifies and summarizes a given article text. The article is classified as either business, entertainment, politics, sport, or tech.')
-    st.markdown('''
-    Two different machine learning models are used to classify the news article. The first model, a Support Vector Machine (SVM) model, is a classical machine learning model that uses the "Bag of Words" model representation of the article text.
-    Other classical models considered were Naive Bayes and Random Forest, but the SVM model outperformed the former models during validation and testing.
+    st.sidebar.title("About")
+    st.sidebar.markdown(```
+        The application classifies and summarizes a given article text.
+        The article text is classified as either business, entertainment, politics, sport, or tech.
+    ```)
+    st.sidebar.markdown('''
+    Two different machine learning models are used to classify the news article. The models were built using the [BBC News Article Dataset](https://www.kaggle.com/datasets/jacopoferretti/bbc-articles-dataset/versions/1/data).
+    The first model, a Support Vector Machine (SVM) model, is a classical machine learning model that uses the "Bag of Words" model representation of the article text.
+    Other classical models were considered like Naive Bayes and Random Forest. However, the SVM model outperformed the former models during validation and testing.
     The second model is Deep Learning model that uses Word Embeddings as the representation of the article text and Convolutional Neural Network as the learning model.
     A [Hugging Face](https://huggingface.co/) pre-trained model is used for news summarization.
     '''.strip());
-    st.markdown('This is a [SuperDataScience Community](https://community.superdatascience.com/) project.')
-
+    st.sidebarmarkdown('This is a [SuperDataScience Community](https://community.superdatascience.com/) Community project.')
 
     # Text input area for the news article
     article_text = st.text_area("Paste your news article here:", value=sample_article().strip(), height=300)
