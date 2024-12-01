@@ -269,7 +269,9 @@ def main():
         
     classification_header = st.empty()
     classification_results = st.empty()
+    classification_plot = st.empty()
     classification_dl_results = st.empty()
+    classification_dl_plot = st.empty()
     summarization_header = st.empty()
     summarization_results = st.empty()
     classical_plot = st.empty()
@@ -279,11 +281,12 @@ def main():
         st.session_state["prev_article"] = article_text
         classification_header.empty()
         classification_results.empty()
+        classification_plot.empty()
         classification_dl_results.empty()
+        classification_dl_plot.empty()
         summarization_header.empty()
         summarization_results.empty()
-        classical_plot.empty()
-    
+        
     # Buttons for actions
     _, _, col1, col2, _, _ = st.columns(6)
     with col1:
@@ -296,11 +299,10 @@ def main():
             with st.spinner("Classifying the article..."):
                 classification_header.subheader("Classification", divider=True)
                 prediction, probabilities = classify(article_text)
-                plot = create_bar_plot(probabilities)
                 classification_results.markdown(f'#### Predicted categories by a Support Vector Machine: {prediction}')
-
-                _, classical_plot_col, _ = st.columns(3)
+                _, _, classical_plot_col, _, _ = st.columns([1, 3, 1])
                 with classical_plot_col:
+                    plot = create_bar_plot(probabilities)
                     classical_plot = st.pyplot(plot)
                 
                 prediction, probabilities = classify_dl(article_text)
