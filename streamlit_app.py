@@ -156,7 +156,7 @@ def classify(text):
     }    
     predicted_categories =  [f':{colors[categories[i]]}[{categories[i]} (Confidence: {probabilities[i]:.2%})]'  for i in prediction_indices]
     
-    return ', '.join(predicted_categories)
+    return ', '.join(predicted_categories), probabilities
 
 
 def classify_dl(text):
@@ -197,7 +197,7 @@ def classify_dl(text):
     predicted_categories =  [f'{label_encoder.inverse_transform([i])[0]} (Confidence: {probabilities[i]:.2%})'  for i in prediction_indices]
     colored_predictions =  [f':{colors[predicted_category.split()[0]]}[{predicted_category}]'  for predicted_category in predicted_categories]
 
-    return ', '.join(colored_predictions)
+    return ', '.join(colored_predictions), probabilities
 
 
 def summarize_article(text):
@@ -247,7 +247,7 @@ def main():
     st.sidebar.markdown('This is a [SuperDataScience Community](https://community.superdatascience.com/) Community project.')
 
     # Text input area for the news article
-    article_text = st.text_area("Paste your news article here:", value=sample_article().strip(), height=300)
+    article_text = st.text_area("Paste your news article here:", value=sample_article().strip(), height=250)
         
     classification_header = st.empty()
     classification_results = st.empty()
@@ -267,16 +267,19 @@ def main():
     # Buttons for actions
     _, _, col1, col2, _, _ = st.columns(6)
     with col1:
-        classify_button = st.button("Classify Article")
+        classify_button = st.button("Classify")
     with col2:
-        summarize_button = st.button("Summarize Article")
+        summarize_button = st.button("Summarize")
 
     if classify_button:
         if article_text.strip():
             with st.spinner("Classifying the article..."):
                 classification_header.subheader("Classification", divider=True)
-                classification_results.markdown(f'#### Predicted categories by a Support Vector Machine: {classify(article_text)}')
-                classification_dl_results.markdown(f'#### Predicted categories by a Convolutional Neural Network: {classify_dl(article_text)}')
+                prediction, probabilities = classify(article_text)
+                classification_results.markdown(f'#### Predicted categories by a Support Vector Machine: {prediction}')
+
+                prediction, probabilities = classify_dl(article_text)
+                classification_dl_results.markdown(f'#### Predicted categories by a Convolutional Neural Network: {prediction}')
         else:
             st.error("Please paste a news article to classify.")
 
