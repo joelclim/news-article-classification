@@ -241,8 +241,8 @@ def create_bar_plot(probabilities):
     plt.ylabel('Probability', fontsize=12)
     plt.ylim(0, max(probabilities) + 0.05)  # Adjust y-axis for better visualization
     plt.grid(axis='y', linestyle='--', alpha=0.7)
-    st.pyplot(plt)  # Display the plot in Streamlit
 
+    return plt
 
 
 # The main method of the Streamlit app
@@ -296,10 +296,12 @@ def main():
             with st.spinner("Classifying the article..."):
                 classification_header.subheader("Classification", divider=True)
                 prediction, probabilities = classify(article_text)
+                plot = create_bar_plot(probabilities)
                 classification_results.markdown(f'#### Predicted categories by a Support Vector Machine: {prediction}')
-                _, _, classical_plot_col, _, _ = st.columns(5)
+
+                _, classical_plot_col, _ = st.columns(3)
                 with classical_plot_col:
-                    classical_plot = create_bar_plot(probabilities)
+                    classical_plot = st.pyplot(plot)
                 
                 prediction, probabilities = classify_dl(article_text)
                 classification_dl_results.markdown(f'#### Predicted categories by a Convolutional Neural Network: {prediction}')
