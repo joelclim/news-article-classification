@@ -268,7 +268,7 @@ def main():
     # Text input area for the news article
     article_text = st.text_area("Paste your news article here:", value=sample_article().strip(), height=250)
 
-    col1, col2, _, _, _, _, _, _, _, _ = st.columns(10)
+    col1, col2, _ = st.columns([1, 1, 10])
     with col1:
         classify_button = st.button("Classify")
 
@@ -281,7 +281,9 @@ def main():
     with classification_plot_col:
         classification_plot = st.empty()
     classification_dl_results = st.empty()
-    classification_dl_plot = st.empty()
+    _, classification_dl_plot_col, _ = st.columns([4, 10, 4])  
+    with classification_dl_plot_col:
+        classification_dl_plot = st.empty()
     summarization_header = st.empty()
     summarization_results = st.empty()
 
@@ -307,10 +309,8 @@ def main():
     
                 prediction, probabilities = classify_dl(article_text)
                 classification_dl_results.markdown(f'#### Predicted categories by a Convolutional Neural Network: {prediction}')
-                _, classification_dl_plot_col, _ = st.columns([1, 10, 1])
-                with classification_dl_plot_col:
-                    plot = create_bar_plot(probabilities)
-                    classification_dl_plot.pyplot(plot)
+                plot = create_bar_plot(probabilities)
+                classification_dl_plot.pyplot(plot)
         else:
             st.error("Please paste a news article to classify.")
 
