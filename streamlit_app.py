@@ -266,7 +266,14 @@ def main():
 
     # Text input area for the news article
     article_text = st.text_area("Paste your news article here:", value=sample_article().strip(), height=250)
-        
+
+    col1, col2 = st.columns(2)
+    with col1:
+        classify_button = st.button("Classify")
+
+    with col2:
+        summarize_button = st.button("Summarize")
+
     classification_header = st.empty()
     classification_results = st.empty()
     classification_plot = st.empty()
@@ -286,9 +293,6 @@ def main():
         summarization_header.empty()
         summarization_results.empty()
         
-    classify_button = st.button("Classify")
-    summarize_button = st.button("Summarize")
-
     if classify_button:
         if article_text.strip():
             with st.spinner("Classifying the article..."):
