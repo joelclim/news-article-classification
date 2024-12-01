@@ -299,13 +299,13 @@ def main():
                 classification_header.subheader("Classification", divider=True)
                 prediction, probabilities = classify(article_text)
                 classification_results.markdown(f'#### Predicted categories by a Support Vector Machine: {prediction}')
-                with st.expander("Probabilities across categories (SVM)")
+                with st.expander("Probabilities across categories (SVM)"):
                     plot = create_bar_plot(probabilities)
                     classification_plot.pyplot(plot)
                 
                 prediction, probabilities = classify_dl(article_text)
                 classification_dl_results.markdown(f'#### Predicted categories by a Convolutional Neural Network: {prediction}')
-                with st.expander("Probabilities across categories (CNN)")
+                with st.expander("Probabilities across categories (CNN)"):
                     plot = create_bar_plot(probabilities)
                     classification_dl_plot.pyplot(plot)
         else:
