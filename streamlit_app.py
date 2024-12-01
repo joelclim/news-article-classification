@@ -149,8 +149,8 @@ def classify(text):
     # Find the index of the maximum probabilities
     max_index = np.argmax(probabilities)
     
-    # Find the indices of probabilities that are within 0.01 of the maximum probabilities
-    threshold = 0.01
+    # Find the indices of probabilities that are within 0.10 of the maximum probabilities
+    threshold = 0.10
     close_indices = np.where(np.abs(probabilities - probabilities[max_index]) <= threshold)[0]
 
     # Merge indices
@@ -183,8 +183,8 @@ def classify_dl(text):
     # Find the index of the maximum probabilities
     max_index = np.argmax(probabilities)
     
-    # Find the indices of probabilities that are within 0.01 of the maximum probabilities
-    threshold = 0.01
+    # Find the indices of probabilities that are within 0.10 of the maximum probabilities
+    threshold = 0.10
     close_indices = np.where(np.abs(probabilities - probabilities[max_index]) <= threshold)[0]
     
     prediction_indices = [max_index] + close_indices
@@ -260,6 +260,8 @@ def main():
         The first model, a Support Vector Machine (SVM) model, is a classical machine learning model that uses the "Bag of Words" model representation of the article text.
         Other classical models were considered like Naive Bayes and Random Forest. However, the SVM model outperformed the former models during validation and testing.
         The second model is Deep Learning model that uses Word Embeddings as the representation of the article text and Convolutional Neural Network as the learning model.
+
+        An article can belong to multiple categories. If the top category's probability is not significantly higher (less than 10%) than others, the article will be assigned to those additional categories as well.
 
         A [Hugging Face](https://huggingface.co/) pre-trained model is used for news summarization.
     '''.strip());
