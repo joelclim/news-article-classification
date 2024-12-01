@@ -277,7 +277,9 @@ def main():
 
     classification_header = st.empty()
     classification_results = st.empty()
-    classification_plot = st.empty()
+    _, classification_plot_col, _ = st.columns([1, 10, 1])  
+    with classification_plot_col:
+        classification_plot = st.empty()
     classification_dl_results = st.empty()
     classification_dl_plot = st.empty()
     summarization_header = st.empty()
@@ -300,14 +302,13 @@ def main():
                 classification_header.subheader("Classification", divider=True)
                 prediction, probabilities = classify(article_text)
                 classification_results.markdown(f'#### Predicted categories by a Support Vector Machine: {prediction}')
-                _, classification_plot_col, _ = st.columns([2, 4, 2])  
-                with classification_plot_col:
-                    plot = create_bar_plot(probabilities)
-                    classification_plot.pyplot(plot)
+                plot = create_bar_plot(probabilities)
+                classification_plot.pyplot(plot)
     
                 prediction, probabilities = classify_dl(article_text)
                 classification_dl_results.markdown(f'#### Predicted categories by a Convolutional Neural Network: {prediction}')
-                with st.expander("Probabilities across categories (CNN)"):
+                _, classification_dl_plot_col, _ = st.columns([1, 10, 1])
+                with classification_dl_plot_col:
                     plot = create_bar_plot(probabilities)
                     classification_dl_plot.pyplot(plot)
         else:
