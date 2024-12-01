@@ -223,7 +223,7 @@ def sample_article():
 
 # Create the plot showing prediction probabilities for each category.
 def create_bar_plot(probabilities):
-    plt.figure(figsize=(4, 3))
+    plt.figure(figsize=(8, 6))
     bars = plt.bar(categories, probabilities, alpha=0.8)
     # Add labels on top of each bar
     for bar in bars:
@@ -299,14 +299,13 @@ def main():
                 classification_header.subheader("Classification", divider=True)
                 prediction, probabilities = classify(article_text)
                 classification_results.markdown(f'#### Predicted categories by a Support Vector Machine: {prediction}')
-                _, _, classical_plot, _, _ = st.columns(5)
-                with classical_plot:
-                    plot = create_bar_plot(probabilities)
-                    classification_plot.pyplot(plot)
+                plot = create_bar_plot(probabilities)
+                classification_plot.pyplot(plot)
                 
                 prediction, probabilities = classify_dl(article_text)
                 classification_dl_results.markdown(f'#### Predicted categories by a Convolutional Neural Network: {prediction}')
-                create_bar_plot(probabilities)
+                plot = create_bar_plot(probabilities)
+                classification_plot_dl.pyplot(plot)
         else:
             st.error("Please paste a news article to classify.")
 
