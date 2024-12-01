@@ -231,7 +231,7 @@ def create_bar_plot(probabilities):
         plt.text(
             bar.get_x() + bar.get_width() / 2,  # X-coordinate
             height,                             # Y-coordinate
-            f'{height:.2f}',                    # Label text
+            f'{height:.4f}',                    # Label text
             ha='center',                        # Horizontal alignment
             va='bottom',                        # Vertical alignment
             fontsize=10                         # Font size
@@ -299,7 +299,7 @@ def main():
                 classification_header.subheader("Classification", divider=True)
                 prediction, probabilities = classify(article_text)
                 classification_results.markdown(f'#### Predicted categories by a Support Vector Machine: {prediction}')
-                _, classical_plot, _ = st.columns(3)
+                _, classical_plot, _ = st.columns(5)
                 with classical_plot:
                     plot = create_bar_plot(probabilities)
                     classification_plot.pyplot(plot)
