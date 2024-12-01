@@ -5,10 +5,11 @@ st.set_page_config(layout="wide")
 if "prev_article" not in st.session_state:
     st.session_state["prev_article"] = ""
 
-import joblib
 import pickle
 import re
 import numpy as np
+import matplotlib.pyplot as plt
+
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
@@ -17,7 +18,6 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 from transformers import pipeline
-
 
 
 @st.cache_resource
@@ -30,8 +30,11 @@ def load_classical_learning_model():
     vectorizer: the vectorizer that represents the compute matrix for the "bag of words" model.
     """
     nltk.download('stopwords')
-    model = joblib.load('models/svm_model.pkl')
-    vectorizer = joblib.load('models/tfidf_vectorizer.pkl')
+    with open("models/svm_model.pkl", "rb") as handle:
+        model = pickle.load(handle)
+
+    with open("models/tfidf_vectorizer.pkl", "rb") as handle:
+        vectorizer = pickle.load(handle)
 
     return model, vectorizer
 
