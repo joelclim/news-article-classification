@@ -146,8 +146,15 @@ def classify(text):
     prediction_indices = [max_index] + close_indices
 
     # Get category labels based on the predicted indices
-    categories = [':red[business]', ':orange[entertainment]', ':green[politics]', ':blue[sport]', ':violet[tech]']
-    predicted_categories =  [f'{categories[i]} (Confidence: {probabilities[i]:.2%})'  for i in prediction_indices]
+    categories = ['business', 'entertainment', 'politics', 'sport', 'tech']
+    colors = {
+        'business': 'red', 
+        'entertainment': 'orange', 
+        'politics': 'green', 
+        'sport': 'blue', 
+        'tech': 'violet'
+    }    
+    predicted_categories =  [f':{colors[categories[i]}[{categories[i]} (Confidence: {probabilities[i]:.2%})]'  for i in prediction_indices]
     
     return ', '.join(predicted_categories)
 
@@ -179,17 +186,18 @@ def classify_dl(text):
     
     prediction_indices = [max_index] + close_indices
     
-    categories = {
-        'business': ':red[business]', 
-        'entertainment': ':orange[entertainment]', 
-        'politics': ':green[politics]', 
-        'sport': ':blue[sport]', 
-        'tech': ':violet[tech]'
+    colors = {
+        'business': 'red', 
+        'entertainment': 'orange', 
+        'politics': 'green', 
+        'sport': 'blue', 
+        'tech': 'violet'
     }
-    predicted_categories = [f'{categories[label_encoder.inverse_transform([i])[0]]} (Confidence: {probabilities[i]:.2%})' 
-                            for i in prediction_indices]
+    
+    predicted_categories =  [f'{dpl_label_encoder.inverse_transform([i])[0]} (Confidence: {probabilities[i]:.2%})'  for i in prediction_indices]
+    colored_predictions =  [f':{colors[predicted_category.split()[0]]}[{predicted_category}]'  for predicted_category in predicted_categories]
 
-    return ', '.join(predicted_categories)
+    return ', '.join(colored_predictions)
 
 
 def summarize_article(text):
@@ -262,7 +270,7 @@ def main():
             with st.spinner("Classifying the article..."):
                 classification_header.subheader("Classification", divider=True)
                 classification_results.markdown(f'#### Predicted categories by a Support Vector Machine: {classify(article_text)}')
-                classification_dl_results.markdown(f'#### Predicted categories by a Convolutioal Neural Network: :orange[{classify_dl(article_text)}]')
+                classification_dl_results.markdown(f'#### Predicted categories by a Convolutioal Neural Network: {classify_dl(article_text)}')
         else:
             st.error("Please paste a news article to classify.")
 
