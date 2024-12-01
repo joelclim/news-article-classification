@@ -248,7 +248,7 @@ def create_bar_plot(probabilities):
 
 # The main method of the Streamlit app
 def main():
-    st.title('🗞️ News Article Classification and Summarization')
+    st.title('🗞️ News Article Classification and Summarization - Hello Team!')
     st.sidebar.title("About")
     st.sidebar.markdown('''
         The application classifies and summarizes a given article text.
