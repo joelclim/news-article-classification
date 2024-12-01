@@ -274,7 +274,6 @@ def main():
     classification_dl_plot = st.empty()
     summarization_header = st.empty()
     summarization_results = st.empty()
-    classical_plot = st.empty()
 
     # Check if the article text has changed
     if article_text != st.session_state["prev_article"]:
@@ -301,7 +300,7 @@ def main():
                 prediction, probabilities = classify(article_text)
                 classification_results.markdown(f'#### Predicted categories by a Support Vector Machine: {prediction}')
                 plot = create_bar_plot(probabilities)
-                classical_plot = st.pyplot(plot)
+                classification_plot = st.pyplot(plot)
                 
                 prediction, probabilities = classify_dl(article_text)
                 classification_dl_results.markdown(f'#### Predicted categories by a Convolutional Neural Network: {prediction}')
