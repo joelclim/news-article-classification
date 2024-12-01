@@ -269,7 +269,8 @@ def main():
         
     classification_header = st.empty()
     classification_results = st.empty()
-    classification_plot = st.empty()
+    classification_plot = st.pyplot()
+    classification_plot.empty()
     classification_dl_results = st.empty()
     classification_dl_plot = st.empty()
     summarization_header = st.empty()
