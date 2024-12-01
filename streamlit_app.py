@@ -224,7 +224,7 @@ def sample_article():
 # Create the plot showing prediction probabilities for each category.
 def create_bar_plot(probabilities):
     plt.figure(figsize=(8, 6))
-    plt.bar(categories, probabilities, alpha=0.8)
+    bars = plt.bar(categories, probabilities, alpha=0.8)
     # Add labels on top of each bar
     for bar in bars:
         height = bar.get_height()
