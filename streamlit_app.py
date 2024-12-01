@@ -154,7 +154,7 @@ def classify(text):
         'sport': 'blue', 
         'tech': 'violet'
     }    
-    predicted_categories =  [f':{colors[categories[i]}[{categories[i]} (Confidence: {probabilities[i]:.2%})]'  for i in prediction_indices]
+    predicted_categories =  [f':{colors[categories[i]]}[{categories[i]} (Confidence: {probabilities[i]:.2%})]'  for i in prediction_indices]
     
     return ', '.join(predicted_categories)
 
