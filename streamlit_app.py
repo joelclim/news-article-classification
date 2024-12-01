@@ -277,7 +277,7 @@ def main():
 
     classification_header = st.empty()
     classification_results = st.empty()
-    _, classification_plot_col, _ = st.columns([1, 10, 1])  
+    _, classification_plot_col, _ = st.columns([4, 10, 4])  
     with classification_plot_col:
         classification_plot = st.empty()
     classification_dl_results = st.empty()
