@@ -268,7 +268,7 @@ def main():
     # Text input area for the news article
     article_text = st.text_area("Paste your news article here:", value=sample_article().strip(), height=250)
 
-    col1, col2, _ = st.columns([1, 1, 10])
+    col1, col2, _ = st.columns([1, 1, 6])
     with col1:
         classify_button = st.button("Classify")
 
