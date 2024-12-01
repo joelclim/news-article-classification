@@ -300,6 +300,7 @@ def main():
                 classification_header.subheader("Classification", divider=True)
                 prediction, probabilities = classify(article_text)
                 classification_results.markdown(f'#### Predicted categories by a Support Vector Machine: {prediction}')
+                _, classification_plot_col, _ = st.columns([1, 2, 1])  
                 with classification_plot_col:
                     plot = create_bar_plot(probabilities)
                     classification_plot.pyplot(plot)
