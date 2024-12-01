@@ -40,7 +40,7 @@ def load_classical_learning_model():
     vectorizer: the vectorizer that represents the compute matrix for the "bag of words" model.
     """
     nltk.download('stopwords')
-    model = joblib.load('models/tfidf_vectorizer.pkl')
+    model = joblib.load('models/svm_model.pkl')
     vectorizer = joblib.load('models/tfidf_vectorizer.pkl')
 
     return model, vectorizer
