@@ -244,7 +244,7 @@ def main():
 
         A [Hugging Face](https://huggingface.co/) pre-trained model is used for news summarization.
     '''.strip());
-    st.sidebarmarkdown('This is a [SuperDataScience Community](https://community.superdatascience.com/) Community project.')
+    st.sidebar.markdown('This is a [SuperDataScience Community](https://community.superdatascience.com/) Community project.')
 
     # Text input area for the news article
     article_text = st.text_area("Paste your news article here:", value=sample_article().strip(), height=300)
