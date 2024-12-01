@@ -20,6 +20,15 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 from transformers import pipeline
 
+categories = ['business', 'entertainment', 'politics', 'sport', 'tech']
+# Color mapping for each category
+colors = {
+    'business': 'red', 
+    'entertainment': 'orange', 
+    'politics': 'green', 
+    'sport': 'blue', 
+    'tech': 'violet'
+}    
 
 @st.cache_resource
 def load_classical_learning_model():
@@ -146,16 +155,8 @@ def classify(text):
     # Merge indices
     prediction_indices = [max_index] + close_indices
 
-    # Get category labels based on the predicted indices
-    categories = ['business', 'entertainment', 'politics', 'sport', 'tech']
-    colors = {
-        'business': 'red', 
-        'entertainment': 'orange', 
-        'politics': 'green', 
-        'sport': 'blue', 
-        'tech': 'violet'
-    }    
-    predicted_categories =  [f':{colors[categories[i]]}[{categories[i]} (Confidence: {probabilities[i]:.2%})]'  for i in prediction_indices]
+    predicted_categories =  [f':{colors[categories[i]]}[{categories[i]} (Confidence: {probabilities[i]:.2%})]'  
+                             for i in prediction_indices]
     
     return ', '.join(predicted_categories), probabilities
 
@@ -186,17 +187,10 @@ def classify_dl(text):
     close_indices = np.where(np.abs(probabilities - probabilities[max_index]) <= threshold)[0]
     
     prediction_indices = [max_index] + close_indices
-    
-    colors = {
-        'business': 'red', 
-        'entertainment': 'orange', 
-        'politics': 'green', 
-        'sport': 'blue', 
-        'tech': 'violet'
-    }
-    
-    predicted_categories =  [f'{label_encoder.inverse_transform([i])[0]} (Confidence: {probabilities[i]:.2%})'  for i in prediction_indices]
-    colored_predictions =  [f':{colors[predicted_category.split()[0]]}[{predicted_category}]'  for predicted_category in predicted_categories]
+    predicted_categories =  [f'{label_encoder.inverse_transform([i])[0]} (Confidence: {probabilities[i]:.2%})' 
+                             for i in prediction_indices]
+    colored_predictions =  [f':{colors[predicted_category.split()[0]]}[{predicted_category}]'  
+                            for predicted_category in predicted_categories]
 
     return ', '.join(colored_predictions), probabilities
 
@@ -226,6 +220,18 @@ def sample_article():
     return '''
     The kiwifruit industry has experienced remarkable growth, with its global market value surpassing A$10 billion in 2018. Projections indicate that by 2025, global consumption will approach 6 million tonnes, expanding at an annual rate of 3.9%. Zespri, the world's largest kiwifruit marketer, manages over 30% of global supply, collaborating with more than 2,500 growers in New Zealand and 1,500 internationally. To streamline its complex operations and meet rising demand, Zespri adopted SAP S/4HANA Cloud, enhancing its supply chain management and data analysis capabilities. This digital transformation enables Zespri to efficiently deliver ripe kiwifruit year-round to consumers worldwide.
     '''
+
+# Create the plot showing prediction probabilities for each category.
+def create_bar_plot(probabilities):
+    plt.figure(figsize=(8, 6))
+    plt.bar(categories, probabilities, alpha=0.8)
+    plt.title('Probabilities Across Categories', fontsize=14)
+    plt.xlabel('Categories', fontsize=12)
+    plt.ylabel('Probability', fontsize=12)
+    plt.ylim(0, max(probabilities) + 0.05)  # Adjust y-axis for better visualization
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    st.pyplot(plt)  # Display the plot in Streamlit
+
 
 
 # The main method of the Streamlit app
@@ -278,9 +284,11 @@ def main():
                 classification_header.subheader("Classification", divider=True)
                 prediction, probabilities = classify(article_text)
                 classification_results.markdown(f'#### Predicted categories by a Support Vector Machine: {prediction}')
-
+                create_bar_plot(probabilities)
+                
                 prediction, probabilities = classify_dl(article_text)
                 classification_dl_results.markdown(f'#### Predicted categories by a Convolutional Neural Network: {prediction}')
+                create_bar_plot(probabilities)
         else:
             st.error("Please paste a news article to classify.")
 
