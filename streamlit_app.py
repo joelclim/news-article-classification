@@ -225,6 +225,17 @@ def sample_article():
 def create_bar_plot(probabilities):
     plt.figure(figsize=(8, 6))
     plt.bar(categories, probabilities, alpha=0.8)
+    # Add labels on top of each bar
+    for bar in bars:
+        height = bar.get_height()
+        plt.text(
+            bar.get_x() + bar.get_width() / 2,  # X-coordinate
+            height,                             # Y-coordinate
+            f'{height:.2f}',                    # Label text
+            ha='center',                        # Horizontal alignment
+            va='bottom',                        # Vertical alignment
+            fontsize=10                         # Font size
+        )
     plt.title('Probabilities Across Categories', fontsize=14)
     plt.xlabel('Categories', fontsize=12)
     plt.ylabel('Probability', fontsize=12)
@@ -261,6 +272,7 @@ def main():
     classification_dl_results = st.empty()
     summarization_header = st.empty()
     summarization_results = st.empty()
+    classical_plot = st.empty()
 
     # Check if the article text has changed
     if article_text != st.session_state["prev_article"]:
@@ -270,6 +282,7 @@ def main():
         classification_dl_results.empty()
         summarization_header.empty()
         summarization_results.empty()
+        classical_plot.empty()
     
     # Buttons for actions
     _, _, col1, col2, _, _ = st.columns(6)
@@ -284,7 +297,9 @@ def main():
                 classification_header.subheader("Classification", divider=True)
                 prediction, probabilities = classify(article_text)
                 classification_results.markdown(f'#### Predicted categories by a Support Vector Machine: {prediction}')
-                create_bar_plot(probabilities)
+                _, _, classical_plot_col, _, _ = st.columns(5)
+                with classical_plot_col:
+                    classical_plot = create_bar_plot(probabilities)
                 
                 prediction, probabilities = classify_dl(article_text)
                 classification_dl_results.markdown(f'#### Predicted categories by a Convolutional Neural Network: {prediction}')
