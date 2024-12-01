@@ -286,12 +286,8 @@ def main():
         summarization_header.empty()
         summarization_results.empty()
         
-    # Buttons for actions
-    _, _, col1, col2, _, _ = st.columns(6)
-    with col1:
-        classify_button = st.button("Classify")
-    with col2:
-        summarize_button = st.button("Summarize")
+    classify_button = st.button("Classify")
+    summarize_button = st.button("Summarize")
 
     if classify_button:
         if article_text.strip():
@@ -305,7 +301,7 @@ def main():
                 prediction, probabilities = classify_dl(article_text)
                 classification_dl_results.markdown(f'#### Predicted categories by a Convolutional Neural Network: {prediction}')
                 plot = create_bar_plot(probabilities)
-                classification_plot_dl.pyplot(plot)
+                classification_dl_plot.pyplot(plot)
         else:
             st.error("Please paste a news article to classify.")
 
