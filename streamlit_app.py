@@ -269,8 +269,7 @@ def main():
         
     classification_header = st.empty()
     classification_results = st.empty()
-    classification_plot = st.pyplot()
-    classification_plot.empty()
+    classification_plot = st.empty()
     classification_dl_results = st.empty()
     classification_dl_plot = st.empty()
     summarization_header = st.empty()
@@ -301,7 +300,7 @@ def main():
                 prediction, probabilities = classify(article_text)
                 classification_results.markdown(f'#### Predicted categories by a Support Vector Machine: {prediction}')
                 plot = create_bar_plot(probabilities)
-                classification_plot = st.pyplot(plot)
+                classification_plot.pyplot(plot)
                 
                 prediction, probabilities = classify_dl(article_text)
                 classification_dl_results.markdown(f'#### Predicted categories by a Convolutional Neural Network: {prediction}')
