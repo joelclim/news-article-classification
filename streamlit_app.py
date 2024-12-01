@@ -5,6 +5,7 @@ st.set_page_config(layout="wide")
 if "prev_article" not in st.session_state:
     st.session_state["prev_article"] = ""
 
+import joblib
 import pickle
 import re
 import numpy as np
