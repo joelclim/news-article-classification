@@ -300,10 +300,8 @@ def main():
                 classification_header.subheader("Classification", divider=True)
                 prediction, probabilities = classify(article_text)
                 classification_results.markdown(f'#### Predicted categories by a Support Vector Machine: {prediction}')
-                _, _, classical_plot_col, _, _ = st.columns([1, 3, 1])
-                with classical_plot_col:
-                    plot = create_bar_plot(probabilities)
-                    classical_plot = st.pyplot(plot)
+                plot = create_bar_plot(probabilities)
+                classical_plot = st.pyplot(plot)
                 
                 prediction, probabilities = classify_dl(article_text)
                 classification_dl_results.markdown(f'#### Predicted categories by a Convolutional Neural Network: {prediction}')
